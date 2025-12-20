@@ -15,7 +15,9 @@ class KmongoDriverRepository(
 
     override suspend fun save(driver: Driver): Driver {
         val doc = DriverDocument.fromDomain(driver)
-        collection.insertOne(doc)
+        println(doc)
+        val res = collection.insertOne(doc)
+        println(res)
         return driver
     }
 

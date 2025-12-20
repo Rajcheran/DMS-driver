@@ -12,14 +12,17 @@ val driverModule = module {
 
     single {
         val uri = System.getenv("MONGO_URI") ?: "mongodb://mongo:27017"
+        println(uri)
         KMongo.createClient(ConnectionString(uri)).coroutine
     }
 
     single {
         val dbName = System.getenv("MONGO_DB") ?: "delivery"
+        println(dbName)
         get<org.litote.kmongo.coroutine.CoroutineClient>().getDatabase(dbName)
     }
 
     single<DriverRepository> { KmongoDriverRepository(get()) }
-    single { DriverService(get()) }
+    single { DriverService(get(),get()) }
+
 }

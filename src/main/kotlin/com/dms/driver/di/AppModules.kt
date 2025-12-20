@@ -1,5 +1,7 @@
 package com.dms.driver.di
 
 val appModules = listOf(
-    driverModule
-)
+        driverModule,
+        cacheModule,
+        kafkaModule
+    )

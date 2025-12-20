@@ -1,7 +1,5 @@
 package com.dms.driver.domain
 
-import com.dms.driver.domain.Driver
-import com.dms.driver.domain.DriverStatus
 
 data class DriverDocument(
     val _id: String,
