@@ -1,0 +1,29 @@
+image: gradle:8.6-jdk17
+
+stages:
+  - test
+  - build
+
+variables:
+  GRADLE_OPTS: "-Dorg.gradle.daemon=false"
+
+cache:
+  key: gradle-cache
+  paths:
+    - .gradle/
+    - build/
+
+test:
+  stage: test
+  script:
+    - ./gradlew clean test
+  artifacts:
+    when: always
+    reports:
+      junit: build/test-results/test/*.xml
+
+build:
+  stage: build
+  needs: ["test"]
+  script:
+    - ./gradlew jibDockerBuild
