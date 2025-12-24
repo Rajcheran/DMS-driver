@@ -13,4 +13,9 @@ data class Driver(
     val status: DriverStatus = DriverStatus.ACTIVE
 )
 
-enum class DriverStatus { ACTIVE, INACTIVE }
+enum class DriverStatus {
+    ACTIVE,
+    INACTIVE,
+    BUSY,
+    OFFLINE
+}

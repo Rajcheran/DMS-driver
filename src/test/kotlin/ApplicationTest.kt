@@ -1,32 +1,26 @@
 package com.dms
 
-import com.dms.driver.cache.DriverCache
 import com.dms.driver.module
-import com.dms.driver.test.fakes.FakeDriverCache
+import com.dms.di.testModule
 import io.ktor.client.request.*
 import io.ktor.http.*
 import io.ktor.server.testing.*
-import org.koin.dsl.module
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
 class ApplicationTest {
 
     @Test
-    fun testRoot() = testApplication {
+    fun health_check_works() = testApplication {
         application {
-            val testCacheModule = module {
-                single<DriverCache> { FakeDriverCache() }
-            }
             module(
                 enableKafka = false,
-                extraModules = listOf(testCacheModule)
+                extraModules = listOf(testModule)
             )
         }
 
-        client.get("/health").apply {
-            assertEquals(HttpStatusCode.OK, status)
-        }
+        val response = client.get("/health")
+        assertEquals(HttpStatusCode.OK, response.status)
     }
 
 }

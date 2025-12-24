@@ -1,11 +1,11 @@
 package com.dms.driver.repositories
 
 import com.dms.driver.domain.Driver
+import com.dms.driver.domain.DriverStatus
 import com.dms.driver.domain.DriverDocument
-import com.dms.driver.repositories.DriverRepository
 import org.litote.kmongo.coroutine.CoroutineDatabase
 import org.litote.kmongo.eq
-import org.litote.kmongo.getCollection
+import org.litote.kmongo.setValue
 
 class KmongoDriverRepository(
     db: CoroutineDatabase
@@ -14,10 +14,7 @@ class KmongoDriverRepository(
     private val collection = db.getCollection<DriverDocument>("drivers")
 
     override suspend fun save(driver: Driver): Driver {
-        val doc = DriverDocument.fromDomain(driver)
-        println(doc)
-        val res = collection.insertOne(doc)
-        println(res)
+        collection.insertOne(DriverDocument.fromDomain(driver))
         return driver
     }
 
@@ -28,4 +25,11 @@ class KmongoDriverRepository(
         collection.find(DriverDocument::agencyId eq agencyId)
             .toList()
             .map { it.toDomain() }
+
+    override suspend fun updateStatus(driverId: String, status: DriverStatus) {
+        collection.updateOne(
+            DriverDocument::_id eq driverId,
+            setValue(DriverDocument::status, status)
+        )
+    }
 }

@@ -7,7 +7,7 @@ data class DriverDocument(
     val name: String,
     val phone: String,
     val pincode: String,
-    val status: String
+    val status: DriverStatus
 ) {
     fun toDomain(): Driver =
         Driver(
@@ -16,7 +16,7 @@ data class DriverDocument(
             name = name,
             phone = phone,
             pincode = pincode,
-            status = DriverStatus.valueOf(status)
+            status = status
         )
 
     companion object {
@@ -27,7 +27,7 @@ data class DriverDocument(
                 name = d.name,
                 phone = d.phone,
                 pincode = d.pincode,
-                status = d.status.name
+                status = d.status
             )
     }
 }
